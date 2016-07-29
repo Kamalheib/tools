@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+
+import re
+import os
+import sys
+from git import Repo
+from argparse import ArgumentParser
+
+class compare(object):
+
+	def get_parser(self):
+		if not hasattr(self, 'parser'):
+			self.parser = ArgumentParser()
+
+		return self.parser
+
+	def parse_args(self, args):
+		self.Parser.add_argument('-p', '--path', help='path to git log file', required=True)
+		self.Parser.add_argument('--old_kernel_path', help='Path to old kernel tree', required=True)
+
+		self.Parser.parse_args(namespace=self, args=args)
+
+	def open_files(self):
+		if not hasattr(self, 'log_file'):
+			self.log_file = open(self.path)
+			self.tmp_log_file = open(self.path + ".tmp", "w")
+
+	def close_files(self):
+		if hasattr(self, 'log_file'):
+			self.log_file.close()
+
+		if hasattr(self, "tmp_log_file"):
+			self.tmp_log_file.close()
+
+	def override_log_file(self):
+
+		os.system("mv %s %s" % (self.path + ".tmp", self.path))
+
+	def get_old_repo(self):
+		if not hasattr(self, 'old_repo'):
+			self.old_repo = Repo(self.old_kernel_path)
+		return self.old_repo
+
+	def compare_commits(self):
+
+		for line in self.log_file:
+			print line.strip()
+
+			if line.startswith("#"):
+				self.tmp_log_file.write(line)
+				continue
+
+			match = re.search("(^[0-9a-f]+) [^:]*: (.*)", line.strip())
+			if match:
+				commit_id, header = match.groups()
+
+			match = re.search("cherry picked from commit ([0-9a-f]+)", self.OldRepo.commit(commit_id).message)
+			if match:
+				upstream_commit = match.group(1)
+			else:
+				print "-E- Failed to find commit for\n%s" % line.strip()
+				self.tmp_log_file.write(line)
+				break
+
+			os.system("git show %s > old_commit" % commit_id)
+			os.system("git show %s > upstream_commit" % upstream_commit)
+			os.system("vimdiff old_commit upstream_commit")
+
+			quit = raw_input("Press q to quit")
+			if quit == "q":
+				self.tmp_log_file.write("#" + line)
+				break
+
+			self.tmp_log_file.write("#" + line)
+
+		for line in self.log_file:
+			self.tmp_log_file.write(line)
+
+	def execute(self, args):
+		self.parse_args(args)
+		self.open_files()
+		self.compare_commits()
+		self.close_files()
+		self.override_log_file()
+
+	Parser = property(get_parser)
+	OldRepo = property(get_old_repo)
+
+if __name__ == '__main__':
+	compare_obj = compare()
+	compare_obj.execute(sys.argv[1:])
