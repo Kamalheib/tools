@@ -1,0 +1,11 @@
+#!/bin/sh -x
+
+rm -fr drivers/net/ethernet/mellanox/
+mkdir -p drivers/net/ethernet/mellanox/
+
+for i in {4,5}
+do
+	git mv drivers/net/mlx$i drivers/net/ethernet/mellanox/
+done
+
+git commit -m "MOVE MLX4 and MLX5 drivers to ethernet dir"
