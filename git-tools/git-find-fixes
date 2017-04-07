@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+
+import re
+import sys
+from git import Repo
+from argparse import ArgumentParser
+
+SEARCH_PATHS = {
+	'ib_core': [
+	'include/rdma/',
+	'drivers/infiniband/core/',
+	'drivers/infiniband/ulp/ipoib'
+	'include/uapi/rdma/ib_user_verbs.h',
+	],
+
+	'mlx4' : [
+	'drivers/net/mlx4/',
+	'include/linux/mlx4/',
+	'drivers/infiniband/hw/mlx4/',
+	'drivers/net/ethernet/mellanox/mlx4/',
+	],
+
+	'mlx5' : [
+	'drivers/net/mlx5/',
+	'include/linux/mlx5/',
+	'drivers/infiniband/hw/mlx5/',
+	'drivers/net/ethernet/mellanox/mlx5/',
+	],
+
+	'srp' : [
+	'drivers/infiniband/ulp/srp/',
+	'include/scsi/srp.h',
+	],
+	'rxe' : [
+	'drivers/infiniband/sw/rxe/',
+	'include/uapi/rdma/rdma_user_rxe.h'
+	],
+}
+
+FIXES_RGEX_LIST = [
+	"Fixes: ([0-9a-f]+)",
+]
+
+
+class git_change_log(object):
+
+	def get_parser(self):
+		if not hasattr(self, 'parser'):
+			self.parser = ArgumentParser()
+		return self.parser
+
+	def parse_args(self, args):
+		self.Parser.add_argument('-u', '--upstream_range', help='Upstream kernel range of commits', required=True)
+		self.Parser.add_argument('-p', '--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
+		self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+', choices=['mlx4', 'mlx5', 'ib_core', 'rxe'], default=['mlx4', 'mlx5', 'ib_core', 'rxe'])
+		self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
+
+		self.Parser.parse_args(namespace=self, args=args)
+
+	def get_upstream_repo(self):
+		if not hasattr(self, 'upstream_repo'):
+			self.upstream_repo = Repo(self.upstream_kernel_path)
+		return self.upstream_repo
+
+	def get_bugfixes(self):
+
+		for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True, reverse=True):
+			match = None
+			for regx in FIXES_RGEX_LIST:
+				match = re.search(regx, commit.message)
+				if match:
+					break
+
+			if match:
+				print "%s # %s" % (commit, commit.summary)
+
+
+	def build_mlx_paths(self):
+		self.MLX_PATHS = []
+		for directory in self.dirs:
+			self.MLX_PATHS += SEARCH_PATHS[directory]
+
+	def execute(self, args):
+		self.parse_args(args)
+		self.build_mlx_paths()
+
+		self.get_bugfixes()
+
+	Parser = property(get_parser)
+	UpstreamRepo = property(get_upstream_repo)
+
+if __name__ == '__main__':
+	change_log = git_change_log()
+	change_log.execute(sys.argv[1:])
