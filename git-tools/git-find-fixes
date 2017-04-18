@@ -77,6 +77,7 @@ class git_find_fixes(object):
         self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
                                  choices=['mlx4', 'mlx5', 'ib_core', 'rxe'], default=['mlx4', 'mlx5', 'ib_core', 'rxe'])
         self.Parser.add_argument('--non-mlx', help='from none Mellanox folks', action='store_true')
+        self.Parser.add_argument('--author', help='Find by author', default=None)
         self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
 
         self.Parser.parse_args(namespace=self, args=args)
@@ -96,10 +97,15 @@ class git_find_fixes(object):
                 if match:
                     break
 
+
             if match:
                 if self.non_mlx:
                     if "mellanox" in commit.author.email:
                         continue
+                if self.author:
+                    if not self.author.lower() in str(commit.author).lower():
+                        continue
+
                 print "%s # %s" % (commit, commit.summary)
 
     def build_mlx_paths(self):
