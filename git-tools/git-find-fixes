@@ -74,11 +74,11 @@ class git_find_fixes(object):
     def parse_args(self, args):
         self.Parser.add_argument('-u', '--upstream_range', help='Upstream kernel range of commits', required=True)
         self.Parser.add_argument('-p', '--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
-        self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
+        self.Parser.add_argument('--dirs', help='List of directors to search for changes', nargs='+',
                                  choices=['mlx4', 'mlx5', 'ib_core', 'rxe'], default=['mlx4', 'mlx5', 'ib_core', 'rxe'])
-        self.Parser.add_argument('--non-mlx', help='from none Mellanox folks', action='store_true')
         self.Parser.add_argument('--author', help='Find by author', default=None)
-        self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
+        self.Parser.add_argument('--non_mlx', help='Search for none Mellanox folks', action='store_true')
+        self.Parser.add_argument('--debug', help='enable debug prints', action="store_true")
 
         self.Parser.parse_args(namespace=self, args=args)
 
