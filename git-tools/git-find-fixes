@@ -25,6 +25,7 @@ Kamal Heib <kamalheib1@gmail.com>
 
 import re
 import sys
+import datetime
 from git import Repo
 from argparse import ArgumentParser
 
@@ -77,6 +78,7 @@ class git_find_fixes(object):
         self.Parser.add_argument('--dirs', help='List of directors to search for changes', nargs='+',
                                  choices=['mlx4', 'mlx5', 'ib_core', 'rxe'], default=['mlx4', 'mlx5', 'ib_core', 'rxe'])
         self.Parser.add_argument('--author', help='Find by author', default=None)
+        self.Parser.add_argument('--week_ago', help='Search for commits a week ago', action='store_true')
         self.Parser.add_argument('--non_mlx', help='Search for none Mellanox folks', action='store_true')
         self.Parser.add_argument('--debug', help='enable debug prints', action="store_true")
 
@@ -87,16 +89,24 @@ class git_find_fixes(object):
             self.upstream_repo = Repo(self.upstream_kernel_path)
         return self.upstream_repo
 
+    def get_upstream_commits(self):
+        if not self.week_ago:
+            return self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True,
+                                                  reverse=True)
+        else:
+            week = datetime.datetime.now() - datetime.timedelta(days=7)
+            return self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True,
+                                                  reverse=True, after=str(week.date().isoformat()))
+
     def get_bugfixes(self):
 
-        for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True,
-                                                     reverse=True):
+        commits = self.get_upstream_commits()
+        for commit in commits:
             match = None
             for regx in FIXES_RGEX_LIST:
                 match = re.search(regx, commit.message)
                 if match:
                     break
-
 
             if match:
                 if self.non_mlx:
