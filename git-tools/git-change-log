@@ -25,8 +25,13 @@ Kamal Heib <kamalheib1@gmail.com>
 
 import re
 import sys
-from git import Repo
 from argparse import ArgumentParser
+
+try:
+    from git import Repo
+except ImportError:
+    print "Please Install GitPython Package (e.g. yum install GitPython)"
+    sys.exit(1)
 
 SEARCH_PATHS = {
     'ib_core': [
