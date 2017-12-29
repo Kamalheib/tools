@@ -65,6 +65,9 @@ SEARCH_PATHS = {
         'include/uapi/rdma/rdma_user_rxe.h'
     ],
 
+    'mlxfw': [
+        'drivers/net/ethernet/mellanox/mlxfw/',
+    ],
 }
 
 PICK_RGEX_LIST = [
@@ -104,7 +107,7 @@ class git_change_log(object):
         self.Parser.add_argument('--old_kernel_path', help='Path to old kernel tree', required=True)
         self.Parser.add_argument('--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
-                                 choices=['mlx4', 'mlx5', 'ib_core'], default=['mlx4', 'mlx5', 'ib_core'])
+                                 choices=['mlx4', 'mlx5', 'ib_core', 'rxe', 'mlxfw'], default=['mlx4', 'mlx5', 'ib_core', 'rxe', 'mlxfw'])
         self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
 
         self.Parser.parse_args(namespace=self, args=args)
