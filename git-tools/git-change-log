@@ -88,7 +88,8 @@ PICK_RGEX_LIST = [
 IGNORE_COMMITS = [
     'abde0260e47b1d285739c7156f5c1167fad3feff',
     'c4b916c574437767454abba0fa4ad2bca503c418',
-    'a2ef27b04708'
+    'a2ef27b04708',
+    'c5c4e40e90b5c714248bcf4e8a63b1a1cd07c11e'
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
