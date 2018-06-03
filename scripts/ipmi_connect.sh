@@ -1,6 +1,7 @@
 #!/bin/sh
 
 HOST=$1
-PASS=$2
+USER=$2
+PASS=$3
 
-ipmitool -I lanplus -H $HOST -U root -P $PASS -a sol activate
+ipmitool -I lanplus -H $HOST -U $USER -P $PASS -a sol activate
