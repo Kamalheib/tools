@@ -13,3 +13,5 @@ if __name__ == "__main__":
 
     elif sys.argv[1] == "mac":
         os.system("xrandr -s 1280x800")
+    elif sys.argv[1] == "vnc":
+        os.system("xrandr -s 1920x1080")
