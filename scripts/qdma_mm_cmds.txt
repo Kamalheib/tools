@@ -1,0 +1,3 @@
+port_init 0 0 1 1
+dma_to_device 0 1 /tmp/one 1024 100
+dma_from_device 0 1 /tmp/qdma_out.txt 1024 100
