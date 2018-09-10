@@ -30,43 +30,21 @@ from argparse import ArgumentParser
 try:
     from git import Repo
 except ImportError:
-    print "Please Install GitPython Package (e.g. yum install GitPython)"
+    print "Please Install GitPython Package (e.g. dnf install GitPython)"
     sys.exit(1)
 
 SEARCH_PATHS = {
-    'ib_core': [
+    'rdma': [
         'include/rdma/',
         'drivers/infiniband/core/',
         'drivers/infiniband/ulp/ipoib'
         'include/uapi/rdma/ib_user_verbs.h',
-    ],
-
-    'mlx4': [
-        'drivers/net/mlx4/',
-        'include/linux/mlx4/',
-        'drivers/infiniband/hw/mlx4/',
-        'drivers/net/ethernet/mellanox/mlx4/',
-    ],
-
-    'mlx5': [
-        'drivers/net/mlx5/',
-        'include/linux/mlx5/',
-        'drivers/infiniband/hw/mlx5/',
-        'drivers/net/ethernet/mellanox/mlx5/',
-    ],
-
-    'srp': [
-        'drivers/infiniband/ulp/srp/',
-        'include/scsi/srp.h',
-    ],
-
-    'rxe': [
-        'drivers/infiniband/sw/rxe/',
-        'include/uapi/rdma/rdma_user_rxe.h'
-    ],
-
-    'mlxfw': [
-        'drivers/net/ethernet/mellanox/mlxfw/',
+        'Documentation/devicetree/bindings/infiniband/',
+	'Documentation/infiniband/',
+        'drivers/infiniband/',
+        'include/uapi/linux/if_infiniband.h',
+        'include/uapi/rdma/',
+        'include/rdma/',
     ],
 }
 
@@ -86,10 +64,6 @@ PICK_RGEX_LIST = [
 ]
 
 IGNORE_COMMITS = [
-    'abde0260e47b1d285739c7156f5c1167fad3feff',
-    'c4b916c574437767454abba0fa4ad2bca503c418',
-    'a2ef27b04708',
-    'c5c4e40e90b5c714248bcf4e8a63b1a1cd07c11e'
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -108,7 +82,7 @@ class git_change_log(object):
         self.Parser.add_argument('--old_kernel_path', help='Path to old kernel tree', required=True)
         self.Parser.add_argument('--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
-                                 choices=['mlx4', 'mlx5', 'ib_core', 'rxe', 'mlxfw'], default=['mlx4', 'mlx5', 'ib_core', 'rxe', 'mlxfw'])
+                                 choices=['rdma'], default=['rdma'])
         self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
 
         self.Parser.parse_args(namespace=self, args=args)
@@ -127,7 +101,7 @@ class git_change_log(object):
         if not hasattr(self, 'included_commits_set'):
             self.included_commits_set = set()
 
-            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.MLX_PATHS):
+            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.RDMA_PATHS):
                 match = None
                 for regex in PICK_RGEX_LIST:
                     match = re.search(regex, commit.message)
@@ -159,7 +133,7 @@ class git_change_log(object):
         if not hasattr(self, 'upstream_commits_set'):
             self.upstream_commits_set = set()
 
-            for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True):
+            for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.RDMA_PATHS, no_merges=True):
                 ignore = False
                 for ignore_commit in IGNORE_UPSTREAM_COMMITS:
                     if ignore_commit in commit.summary:
@@ -175,14 +149,14 @@ class git_change_log(object):
 
         not_inclueded_commits = self.UpstreamCommits - self.IncludedCommits
 
-        for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.MLX_PATHS, no_merges=True,
+        for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.RDMA_PATHS, no_merges=True,
                                                      reverse=True):
             if commit.hexsha in not_inclueded_commits:
                 msg = "%s # %s" % (commit, commit.summary)
 
                 for c_f in commit.stats.files:
                     found = False
-                    for f in self.MLX_PATHS:
+                    for f in self.RDMA_PATHS:
                         if f in str(c_f):
                             found = True
                             break
@@ -193,14 +167,14 @@ class git_change_log(object):
 
                 print msg
 
-    def build_mlx_paths(self):
-        self.MLX_PATHS = []
+    def build_paths(self):
+        self.RDMA_PATHS = []
         for directory in self.dirs:
-            self.MLX_PATHS += SEARCH_PATHS[directory]
+            self.RDMA_PATHS += SEARCH_PATHS[directory]
 
     def execute(self, args):
         self.parse_args(args)
-        self.build_mlx_paths()
+        self.build_paths()
 
         self.get_not_included_commits()
 
