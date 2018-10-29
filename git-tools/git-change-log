@@ -34,18 +34,38 @@ except ImportError:
     sys.exit(1)
 
 SEARCH_PATHS = {
-    'rdma': [
-        'include/rdma/',
-        'drivers/infiniband/core/',
-        'drivers/infiniband/ulp/ipoib'
-        'include/uapi/rdma/ib_user_verbs.h',
-        'Documentation/devicetree/bindings/infiniband/',
-	'Documentation/infiniband/',
-        'drivers/infiniband/',
-        'include/uapi/linux/if_infiniband.h',
-        'include/uapi/rdma/',
-        'include/rdma/',
-    ],
+        'core': [
+            'drivers/infiniband/Makefile',
+            'drivers/infiniband/Kconfig',
+            'drivers/infiniband/core/',
+            'include/rdma/',
+            'include/uapi/rdma/',
+            'drivers/infiniband/sw/',
+            ],
+        'drivers': [
+            'drivers/infiniband/hw/ehca/',
+            'drivers/infiniband/hw/mthca/',
+            'drivers/infiniband/hw/nes/',
+            'drivers/infiniband/hw/ocrdma/',
+            'drivers/net/ethernet/emulex/',
+            'drivers/infiniband/hw/usnic/',
+            'drivers/net/ethernet/cisco',
+            'drivers/infiniband/hw/vmw_pvrdma',
+            ],
+        'ulps': [
+            'drivers/infiniband/ulp/ipoib/',
+            'drivers/infiniband/ulp/iser/',
+            'drivers/infiniband/ulp/isert/',
+            'drivers/infiniband/ulp/srp/',
+            'drivers/scsi/scsi_transport_srp.c',
+            'include/scsi/scsi_transport_srp.h',
+            'drivers/infiniband/ulp/srpt/',
+            'drivers/scsi/scsi_transport_srp.c',
+            'include/scsi/scsi_transport_srp.h',
+            'net/sunrpc/xprtrdma/',
+            'include/linux/sunrpc/rpc_rdma.h',
+            'include/linux/sunrpc/xprtrdma.h',
+            ],
 }
 
 PICK_RGEX_LIST = [
@@ -64,6 +84,9 @@ PICK_RGEX_LIST = [
 ]
 
 IGNORE_COMMITS = [
+        "1753a2f80cd3ebdda48c44469433499e60a2392a",
+        "d718edd1ab0fa6508ab7e1a6b50d08cb845629af",
+        "3bbccff60273510118eecbb8d316ab8dae327b78"
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -82,7 +105,7 @@ class git_change_log(object):
         self.Parser.add_argument('--old_kernel_path', help='Path to old kernel tree', required=True)
         self.Parser.add_argument('--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.Parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
-                                 choices=['rdma'], default=['rdma'])
+                                 choices=['core', 'drivers', 'ulps'], default=[ 'core', 'drivers', 'ulps'])
         self.Parser.add_argument('--debug', help="enable debug prints", action="store_true")
 
         self.Parser.parse_args(namespace=self, args=args)
@@ -111,6 +134,7 @@ class git_change_log(object):
                 if match:
                     if self.debug:
                         print "Found:", commit
+                        print regex
                     ignore = False
                     for msg in IGNORE_COMMITS:
                         if msg in commit.message:

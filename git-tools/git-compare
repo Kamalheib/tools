@@ -82,7 +82,7 @@ class compare(object):
             if match:
                 commit_id, header = match.groups()
 
-            match = re.search("cherry picked from commit ([0-9a-f]+)", self.OldRepo.commit(commit_id).message)
+            match = re.search("commit ([0-9a-f]+)", self.OldRepo.commit(commit_id).message)
             if match:
                 upstream_commit = match.group(1)
             else:

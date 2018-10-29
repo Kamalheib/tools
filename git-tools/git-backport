@@ -76,12 +76,12 @@ class git_backport(object):
         diff_name = '{:04d}'.format(idx)
         if self.hash:
             diff_name = '{:04d}'.format(idx) + '-' + commit.hexsha
-        diff_file = open(self.dir + os.sep + diff_name + '.diff', 'rw+')
+        diff_file = open(self.dir + os.sep + diff_name + '.diff', 'w+')
         out = "From: %s\n\nSubject: %s\n\n" % (self.User, commit.summary)
         if self.bugzilla:
             out += "Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=%s\n\n" % self.bugzilla
-        out += "%s" % self.UpstreamRepo.git.show(commit.hexsha)
-        diff_file.write(out)
+        out += "%s" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
+        diff_file.write(out + "\n")
         diff_file.close()
 
     def execute(self, args):
