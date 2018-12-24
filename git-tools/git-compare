@@ -64,6 +64,9 @@ class compare(object):
 
         os.system("mv %s %s" % (self.path + ".tmp", self.path))
 
+    def delete_commit_files(self):
+        os.system("rm old_commit upstream_commit")
+
     def get_old_repo(self):
         if not hasattr(self, 'old_repo'):
             self.old_repo = Repo(self.old_kernel_path)
@@ -110,6 +113,7 @@ class compare(object):
         self.compare_commits()
         self.close_files()
         self.override_log_file()
+        self.delete_commit_files()
 
     Parser = property(get_parser)
     OldRepo = property(get_old_repo)
