@@ -4,8 +4,8 @@ dnf install -y bison openssl-devel ncurses-devel bc elfutils-libelf-devel flex
 
 mkdir -p /tmp/work/rootfs
 cd /tmp/work/rootfs
-dnf groupinstall "Fedora Server Edition" --releasever=29 --installroot=`pwd` --repo=fedora --repo=updates -y
-dnf install -y --releasever=29 --installroot=`pwd` --repo=fedora --repo=updates rdma-core
+dnf groupinstall "Minimal Install" --releasever=29 --installroot=`pwd` --repo=fedora --repo=updates -y
+dnf install -y --releasever=29 --installroot=`pwd` --repo=fedora --repo=updates rdma-core pciutils infiniband-diags libibverbs-utils
 sed -i 's/root:\*:/root::/g' etc/shadow
 
 cd /tmp/work
