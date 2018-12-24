@@ -8,11 +8,10 @@ cd ~/work/qemu/
 	-s \
 	-cpu host \
 	-smp cpus=4 \
-	-m 1G \
+	-m 2G \
 	-nographic \
 	-enable-kvm  \
 	-kernel $KERNEL \
 	-initrd $ROOTFS \
 	-append "root=/dev/ram rdinit=/sbin/init  console=ttyS0 nokaslr" \
 	-object memory-backend-ram,id=mb1,size=1G,share \
-	-numa node,memdev=mb1 \
