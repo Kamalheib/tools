@@ -77,7 +77,7 @@ class cherry_pick(object):
                 print "-E- Failed to parse line: %s" % line.strip()
                 break
 
-            rc = os.system('git cherry-pick -x -s %s' % commit_id)
+            rc = os.system('git cherry-pick %s' % commit_id)
             if rc:
                 self.tmp_log_file.write(line)
                 print "-E- Failed cherry-pick commit %s" % line.strip()
