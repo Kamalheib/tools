@@ -1,8 +1,8 @@
 #!/bin/sh
 
 yum install -y pixman-devel jemalloc-devel libcap-devel libattr-devel
-mkdir -p ~/work/
-cd ~/work
+mkdir -p /home/
+cd /home
 git clone https://github.com/qemu/qemu.git
 cd qemu
 mkdir build
