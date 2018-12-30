@@ -8,7 +8,7 @@ dnf groupinstall "Minimal Install" --releasever=29 --installroot=`pwd` --repo=fe
 dnf install -y --releasever=29 --installroot=`pwd` --repo=fedora --repo=updates rdma-core pciutils infiniband-diags libibverbs-utils
 sed -i 's/root:\*:/root::/g' etc/shadow
 
-cd /home
+cd /tmp
 git clone https://github.com/torvalds/linux.git
 cd linux/
 git checkout -b v4.19 v4.19
