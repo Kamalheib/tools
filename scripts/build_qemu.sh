@@ -11,4 +11,4 @@ cd build
          --libexecdir=/usr/lib/qemu --python=/usr/bin/python2 \
          --smbd=/usr/bin/smbd --with-sdlabi=2.0 --enable-modules \
          --enable-jemalloc --enable-debug --target-list=x86_64-softmmu --enable-virtfs --enable-rdma
-make -j 16
+CFLAGS+="-DPVRDMA_DEBUG" make -j 16
