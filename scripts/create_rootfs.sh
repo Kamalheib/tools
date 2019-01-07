@@ -4,8 +4,8 @@ dnf install -y bison openssl-devel ncurses-devel bc elfutils-libelf-devel flex
 
 mkdir -p /home/rootfs
 cd /home/rootfs
-dnf groupinstall "Minimal Install" --releasever=rawhide --installroot=`pwd` --repo=fedora --repo=updates -y
-dnf install -y --releasever=rawhide --installroot=`pwd` --repo=fedora --repo=updates rdma-core pciutils infiniband-diags libibverbs-utils
+dnf groupinstall "Minimal Install" --releasever=30 --installroot=`pwd` --repo=fedora --repo=updates -y
+dnf install -y --releasever=30 --installroot=`pwd` --repo=fedora --repo=updates rdma-core pciutils infiniband-diags libibverbs-utils
 sed -i 's/root:\*:/root::/g' etc/shadow
 
 cd /tmp
