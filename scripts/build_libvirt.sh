@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dnf install -y libtool rpcgen gnutls-devel libnl3-devel glibc2 glibc-devel mingw32-portablexdr mingw64-portablexdr
+dnf install -y libtool rpcgen gnutls-devel libnl3-devel glibc2 glibc2-devel mingw32-portablexdr mingw64-portablexdr
 cd /home
 git clone http://github.com/kamalheib/libvirt
 cd libvirt
