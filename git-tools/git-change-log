@@ -86,7 +86,9 @@ PICK_RGEX_LIST = [
 IGNORE_COMMITS = [
         "1753a2f80cd3ebdda48c44469433499e60a2392a",
         "d718edd1ab0fa6508ab7e1a6b50d08cb845629af",
-        "3bbccff60273510118eecbb8d316ab8dae327b78"
+        "3bbccff60273510118eecbb8d316ab8dae327b78",
+        "beb9ca4cf957e96f2916b0c4f7c98609b5726652",
+        "380193320b040713de0a259cfbd72ae3e91f887e"
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -177,17 +179,6 @@ class git_change_log(object):
                                                      reverse=True):
             if commit.hexsha in not_inclueded_commits:
                 msg = "%s # %s" % (commit, commit.summary)
-
-                for c_f in commit.stats.files:
-                    found = False
-                    for f in self.RDMA_PATHS:
-                        if f in str(c_f):
-                            found = True
-                            break
-
-                    if not found:
-                        msg = "%s # GENERIC %s" % (commit, commit.summary)
-                        break
 
                 print msg
 
