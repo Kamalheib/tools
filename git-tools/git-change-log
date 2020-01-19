@@ -35,22 +35,21 @@ except ImportError:
 
 SEARCH_PATHS = {
         'core': [
+            'include/uapi/linux/if_infiniband.h',
+            'Documentation/infiniband',
             'drivers/infiniband/Makefile',
             'drivers/infiniband/Kconfig',
             'drivers/infiniband/core/',
             'include/rdma/',
             'include/uapi/rdma/',
-            'drivers/infiniband/sw/',
             ],
         'drivers': [
-            'drivers/infiniband/hw/ehca/',
-            'drivers/infiniband/hw/mthca/',
-            'drivers/infiniband/hw/nes/',
-            'drivers/infiniband/hw/ocrdma/',
-            'drivers/net/ethernet/emulex/',
-            'drivers/infiniband/hw/usnic/',
-            'drivers/net/ethernet/cisco',
+            'drivers/infiniband/sw/rxe',
+            'drivers/infiniband/sw/siw',
+            'drivers/infiniband/sw/rdmavt',
             'drivers/infiniband/hw/vmw_pvrdma',
+            'drivers/infiniband/hw/efa',
+            'drivers/infiniband/hw/hfi1',
             ],
         'ulps': [
             'drivers/infiniband/ulp/ipoib/',
@@ -88,7 +87,9 @@ IGNORE_COMMITS = [
         "d718edd1ab0fa6508ab7e1a6b50d08cb845629af",
         "3bbccff60273510118eecbb8d316ab8dae327b78",
         "beb9ca4cf957e96f2916b0c4f7c98609b5726652",
-        "380193320b040713de0a259cfbd72ae3e91f887e"
+        "380193320b040713de0a259cfbd72ae3e91f887e",
+        "f186090846c29fd9760917fb3d01f095c39262e0",
+        "151f64387b586721e68ae7539be394d7cd30a0fd"
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -179,7 +180,6 @@ class git_change_log(object):
                                                      reverse=True):
             if commit.hexsha in not_inclueded_commits:
                 msg = "%s # %s" % (commit, commit.summary)
-
                 print msg
 
     def build_paths(self):
