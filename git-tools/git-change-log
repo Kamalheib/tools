@@ -107,8 +107,8 @@ class git_change_log(object):
     def parse_args(self, args):
         self.parser.add_argument('-o', '--old_range', help='Old kernel range of commits', required=True)
         self.parser.add_argument('-u', '--upstream_range', help='Upstream kernel range of commits', required=True)
-        self.parser.add_argument('--old_kernel_path', help='Path to old kernel tree', required=True)
-        self.parser.add_argument('--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
+        self.parser.add_argument('-l', '--old_kernel_path', help='Path to old kernel tree', required=True)
+        self.parser.add_argument('-p', '--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
                                  choices=['core', 'drivers', 'ulps'], default=[ 'core', 'drivers', 'ulps'])
         self.parser.add_argument('--debug', help="enable debug prints", action="store_true")
