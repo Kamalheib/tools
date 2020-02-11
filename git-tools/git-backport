@@ -46,6 +46,7 @@ class git_backport(object):
         self.Parser.add_argument('-d', '--dir', help='Directory to store the diff files', default='/tmp')
         self.Parser.add_argument('-f', '--file', help='File that include the change log', required=True)
         self.Parser.add_argument('-u', '--upstream_dir', help='Path to upstream kernel tree', required=True)
+        self.Parser.add_argument('-k', '--kernel_dir', help='Path to kernel tree', required=True)
         self.Parser.add_argument('--hash', help='Insert hash into diff file name', action='store_true')
         self.Parser.add_argument('--debug', help='Enable debug prints', action='store_true')
 
@@ -65,10 +66,15 @@ class git_backport(object):
             self.upstream_repo = Repo(self.upstream_dir)
         return self.upstream_repo
 
+    def get_kernel_repo(self):
+        if not hasattr(self, 'kernel_repo'):
+            self.kernel_repo = Repo(self.kernel_dir)
+        return self.kernel_repo
+
     def get_user(self):
         if not hasattr(self, 'user'):
-            name = self.UpstreamRepo.config_reader().get_value('user', 'name')
-            email = self.UpstreamRepo.config_reader().get_value('user', 'email')
+            name = self.KernelRepo.config_reader().get_value('user', 'name')
+            email = self.KernelRepo.config_reader().get_value('user', 'email')
             self.user = "%s <%s>" % (name, email)
         return self.user
 
@@ -100,6 +106,7 @@ class git_backport(object):
 
     User = property(get_user)
     Parser = property(get_parser)
+    KernelRepo = property(get_kernel_repo)
     UpstreamRepo = property(get_upstream_repo)
     ChangeLogFile = property(get_change_log_file)
 
