@@ -90,6 +90,7 @@ class git_backport(object):
         out = out.encode('utf-8')
         diff_file.write(out + "\n")
         diff_file.close()
+        print(self.dir + os.sep + diff_name + '.diff')
 
     def execute(self, args):
         self.parse_args(args)
