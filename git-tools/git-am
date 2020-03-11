@@ -31,7 +31,7 @@ class am(object):
 
 	def am_patches(self):
 		for line in self.patches_file:
-			print line.strip()
+			print(line.strip())
 
 			if line.startswith('#'):
 				self.tmp_patches_file.write(line)
@@ -39,7 +39,7 @@ class am(object):
 
 			rc = os.system('git am -s -3 %s' % line.strip())
 			if rc:
-				print "Failed to am (%s)" % line.strip()
+				print("Failed to am (%s)" % line.strip())
 				self.tmp_patches_file.write(line)
 				break
 			else:
