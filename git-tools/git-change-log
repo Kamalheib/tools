@@ -30,7 +30,7 @@ from argparse import ArgumentParser
 try:
     from git import Repo
 except ImportError:
-    print "Please Install GitPython Package (e.g. dnf install GitPython)"
+    print("Please Install GitPython Package (e.g. dnf install GitPython)")
     sys.exit(1)
 
 SEARCH_PATHS = {
@@ -138,8 +138,8 @@ class git_change_log(object):
 
                 if match:
                     if self.debug:
-                        print "Found:", commit
-                        print regex
+                        print("Found:", commit)
+                        print(regex)
                     ignore = False
                     for msg in IGNORE_COMMITS:
                         if msg in commit.message:
@@ -153,7 +153,7 @@ class git_change_log(object):
                     self.included_commits_set.add(upstream_commit.hexsha)
                 else:
                     if self.debug:
-                        print "Not found:", commit
+                        print("Not found:", commit)
 
 
         return self.included_commits_set
@@ -182,7 +182,7 @@ class git_change_log(object):
                                                      reverse=True):
             if commit.hexsha in not_inclueded_commits:
                 msg = "%s # %s" % (commit, commit.summary)
-                print msg
+                print(msg)
 
     def build_paths(self):
         self.RDMA_PATHS = []
