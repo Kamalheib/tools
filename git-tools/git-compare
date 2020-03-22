@@ -32,7 +32,7 @@ from argparse import ArgumentParser
 try:
     from git import Repo
 except ImportError:
-    print "Please Install GitPython Package (e.g. yum install GitPython)"
+    print("Please Install GitPython Package (e.g. yum install GitPython)")
     sys.exit(1)
 
 class compare(object):
@@ -75,7 +75,7 @@ class compare(object):
     def compare_commits(self):
 
         for line in self.log_file:
-            print line.strip()
+            print(line.strip())
 
             if line.startswith("#"):
                 self.tmp_log_file.write(line)
@@ -89,7 +89,7 @@ class compare(object):
             if match:
                 upstream_commit = match.group(1)
             else:
-                print "-E- Failed to find commit for\n%s" % line.strip()
+                print("-E- Failed to find commit for\n%s" % line.strip())
                 self.tmp_log_file.write(line)
                 break
 
