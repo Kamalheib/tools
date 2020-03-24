@@ -31,7 +31,7 @@ from argparse import ArgumentParser
 try:
     from git import Repo
 except ImportError:
-    print "Please Install GitPython Package (e.g. yum install GitPython)"
+    print("Please Install GitPython Package (e.g. yum install GitPython)")
     sys.exit(1)
 
 SEARCH_PATHS = {
@@ -121,7 +121,7 @@ class git_find_fixes(object):
                     if not self.author.lower() in str(commit.author).lower():
                         continue
 
-                print "%s # %s" % (commit, commit.summary)
+                print("%s # %s" % (commit, commit.summary))
 
     def build_mlx_paths(self):
         self.MLX_PATHS = []
