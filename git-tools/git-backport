@@ -86,9 +86,8 @@ class git_backport(object):
         out = "From: %s\n\nSubject: %s\n\n" % (self.User, commit.summary)
         if self.bugzilla:
             out += "Bugzilla: http://bugzilla.redhat.com/%s\n\n" % self.bugzilla
-        out += "%s" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
-        out = out.encode('utf-8')
-        diff_file.write(out + "\n")
+        out += "%s\n" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
+        diff_file.write(out)
         diff_file.close()
         print(self.dir + os.sep + diff_name + '.diff')
 
@@ -97,7 +96,7 @@ class git_backport(object):
 
         idx = 1
         for line in self.ChangeLogFile.readlines():
-            match = re.search("(^[0-9a-f]+) # ([^:]*: .*)", line.strip())
+            match = re.search("(^[0-9a-f]+)", line.strip())
             if match:
                 commit = self.UpstreamRepo.commit(match.group(1))
                 self.create_diff_file(commit, idx)
