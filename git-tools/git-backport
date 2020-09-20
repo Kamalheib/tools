@@ -48,7 +48,7 @@ class git_backport(object):
         self.Parser.add_argument('-u', '--upstream_dir', help='Path to upstream kernel tree', required=True)
         self.Parser.add_argument('-k', '--kernel_dir', help='Path to kernel tree', required=True)
         self.Parser.add_argument('--hash', help='Insert hash into diff file name', action='store_true')
-        self.Parser.add_argument('--debug', help='Enable debug prints', action='store_true')
+        self.Parser.add_argument('-a', '--am_file', help='Create git-am file', action='store_true', default=True)
 
         self.Parser.parse_args(namespace=self, args=args)
 
@@ -60,6 +60,15 @@ class git_backport(object):
     def close_change_log_file(self):
         if hasattr(self, 'change_log_file'):
             self.change_log_file.close()
+
+    def get_am_file(self):
+        if not hasattr(self, 'git_am_file'):
+            self.git_am_file = open(self.dir + os.sep + 'git-am', 'w')
+        return self.git_am_file
+
+    def close_am_file(self):
+        if hasattr(self, 'git_am_file'):
+            self.git_am_file.close()
 
     def get_upstream_repo(self):
         if not hasattr(self, 'upstream_repo'):
@@ -89,7 +98,10 @@ class git_backport(object):
         out += "%s\n" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
         diff_file.write(out)
         diff_file.close()
-        print(self.dir + os.sep + diff_name + '.diff')
+        file_path_str = self.dir + os.sep + diff_name + '.diff'
+        print(file_path_str)
+        if self.am_file:
+            self.AMFile.write(file_path_str + '\n')
 
     def execute(self, args):
         self.parse_args(args)
@@ -103,9 +115,11 @@ class git_backport(object):
                 idx += 1
 
         self.close_change_log_file()
+        self.close_am_file()
 
     User = property(get_user)
     Parser = property(get_parser)
+    AMFile = property(get_am_file)
     KernelRepo = property(get_kernel_repo)
     UpstreamRepo = property(get_upstream_repo)
     ChangeLogFile = property(get_change_log_file)
