@@ -5,3 +5,6 @@ yum install -y cmake gcc libnl3-devel libudev-devel pkgconfig valgrind-devel nin
 
 #iproute2
 yum install -y bison flex libmnl-devel libcap-devel
+
+#kernel
+yum install -y openssl openssl-devel elfutils-libelf-devel bc
