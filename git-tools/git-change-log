@@ -50,9 +50,12 @@ SEARCH_PATHS = {
             'drivers/infiniband/hw/vmw_pvrdma',
             'drivers/infiniband/hw/efa',
             'drivers/infiniband/hw/hfi1',
+            'drivers/infiniband/hw/irdma',
+            'drivers/infiniband/hw/usnic',
             ],
         'ulps': [
             'drivers/infiniband/ulp/ipoib/',
+            'drivers/infiniband/ulp/opa_vnic',
             'drivers/infiniband/ulp/iser/',
             'drivers/infiniband/ulp/isert/',
             'drivers/infiniband/ulp/srp/',
@@ -61,10 +64,10 @@ SEARCH_PATHS = {
             'drivers/infiniband/ulp/srpt/',
             'drivers/scsi/scsi_transport_srp.c',
             'include/scsi/scsi_transport_srp.h',
-            'net/sunrpc/xprtrdma/',
-            'include/linux/sunrpc/rpc_rdma.h',
-            'include/linux/sunrpc/xprtrdma.h',
             ],
+        'vmxnet3': [
+            'drivers/net/vmxnet3',
+        ],
 }
 
 PICK_RGEX_LIST = [
@@ -90,7 +93,8 @@ IGNORE_COMMITS = [
         "380193320b040713de0a259cfbd72ae3e91f887e",
         "f186090846c29fd9760917fb3d01f095c39262e0",
         "151f64387b586721e68ae7539be394d7cd30a0fd",
-        "95a7744317371145738f56f25359056e446e9923"
+        "95a7744317371145738f56f25359056e446e9923",
+        "c71fee0d8b31f8068ed55d24aa8a6a005b6cab93"
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -111,7 +115,7 @@ class git_change_log(object):
         self.parser.add_argument('-l', '--old_kernel_path', help='Path to old kernel tree', required=True)
         self.parser.add_argument('-p', '--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
-                                 choices=['core', 'drivers', 'ulps'], default=[ 'core', 'drivers', 'ulps'])
+                                 choices=['core', 'drivers', 'ulps', 'vmxnet3'], default=[ 'core', 'drivers', 'ulps'])
         self.parser.add_argument('--debug', help="enable debug prints", action="store_true")
 
         self.parser.parse_args(namespace=self, args=args)
