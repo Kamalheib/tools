@@ -117,6 +117,7 @@ class git_change_log(object):
         self.parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
                                  choices=['core', 'drivers', 'ulps', 'vmxnet3'], default=[ 'core', 'drivers', 'ulps'])
         self.parser.add_argument('--debug', help="enable debug prints", action="store_true")
+        self.parser.add_argument('--fixes', help="enable find fixes commit only", action="store_true", default=False)
 
         self.parser.parse_args(namespace=self, args=args)
 
@@ -175,6 +176,9 @@ class git_change_log(object):
                         break
                 if ignore:
                     continue
+                if self.fixes:
+                    if "Fixes:" not in commit.message:
+                        continue
                 self.upstream_commits_set.add(commit.hexsha)
 
         return self.upstream_commits_set
