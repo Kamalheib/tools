@@ -86,15 +86,6 @@ PICK_RGEX_LIST = [
 ]
 
 IGNORE_COMMITS = [
-        "1753a2f80cd3ebdda48c44469433499e60a2392a",
-        "d718edd1ab0fa6508ab7e1a6b50d08cb845629af",
-        "3bbccff60273510118eecbb8d316ab8dae327b78",
-        "beb9ca4cf957e96f2916b0c4f7c98609b5726652",
-        "380193320b040713de0a259cfbd72ae3e91f887e",
-        "f186090846c29fd9760917fb3d01f095c39262e0",
-        "151f64387b586721e68ae7539be394d7cd30a0fd",
-        "95a7744317371145738f56f25359056e446e9923",
-        "c71fee0d8b31f8068ed55d24aa8a6a005b6cab93"
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
@@ -135,12 +126,18 @@ class git_change_log(object):
         if not hasattr(self, 'included_commits_set'):
             self.included_commits_set = set()
 
-            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.RDMA_PATHS):
+            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.RDMA_PATHS, no_merges=True):
                 match = None
                 for regex in PICK_RGEX_LIST:
                     match = re.search(regex, commit.message)
                     if match:
-                        break
+                        revert = "This reverts commit %s" % match.group(1)
+                        if revert in commit.message:
+                            if self.debug:
+                                print("Ignore:", commit)
+                            continue
+                        else:
+                            break
 
                 if match:
                     if self.debug:
@@ -153,6 +150,7 @@ class git_change_log(object):
                             break
 
                     if ignore:
+                        print("Ignore:", commit)
                         continue
 
                     upstream_commit = self.UpstreamRepo.commit(match.group(1))
