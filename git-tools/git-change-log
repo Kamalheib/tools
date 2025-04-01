@@ -201,6 +201,8 @@ class git_change_log(object):
         self.build_paths()
 
         self.get_not_included_commits()
+        self.OldRepo.close()
+        self.UpstreamRepo.close()
 
     OldRepo = property(get_old_repo)
     UpstreamRepo = property(get_upstream_repo)
