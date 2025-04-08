@@ -42,7 +42,7 @@ class git_backport(object):
         return self.parser
 
     def parse_args(self, args):
-        self.Parser.add_argument('-b', '--bugzilla', help='Bugzilla number')
+        self.Parser.add_argument('-j', '--jira', help='Jira issue')
         self.Parser.add_argument('-d', '--dir', help='Directory to store the diff files', default='/tmp')
         self.Parser.add_argument('-f', '--file', help='File that include the change log', required=True)
         self.Parser.add_argument('-u', '--upstream_dir', help='Path to upstream kernel tree', required=True)
@@ -93,8 +93,8 @@ class git_backport(object):
             diff_name = '{:04d}'.format(idx) + '-' + commit.hexsha
         diff_file = open(self.dir + os.sep + diff_name + '.diff', 'w+')
         out = "From: %s\n\nSubject: %s\n\n" % (self.User, commit.summary)
-        if self.bugzilla:
-            out += "Bugzilla: http://bugzilla.redhat.com/%s\n\n" % self.bugzilla
+        if self.jira:
+            out += "JIRA: https://issues.redhat.com/browse/%s\n\n" % self.jira
         out += "%s\n" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
         diff_file.write(out)
         diff_file.close()
@@ -116,6 +116,8 @@ class git_backport(object):
 
         self.close_change_log_file()
         self.close_am_file()
+        self.KernelRepo.close()
+        self.UpstreamRepo.close()
 
     User = property(get_user)
     Parser = property(get_parser)
