@@ -65,8 +65,46 @@ SEARCH_PATHS = {
             'drivers/scsi/scsi_transport_srp.c',
             'include/scsi/scsi_transport_srp.h',
             ],
-        'vmxnet3': [
-            'drivers/net/vmxnet3',
+        'efa': [
+            'drivers/infiniband/hw/efa/',
+            'include/uapi/rdma/efa-abi.h',
+            ],
+        'bnxt_re': [
+            'drivers/infiniband/hw/bnxt_re/',
+            'include/uapi/rdma/bnxt_re-abi.h',
+            ],
+        'irdma': [
+            'drivers/infiniband/hw/irdma/',
+            'include/uapi/rdma/irdma-abi.h',
+            ],
+        'cxgb4': [
+            'drivers/infiniband/hw/cxgb4/',
+            'include/uapi/rdma/cxgb4-abi.h',
+            ],
+        'hfi1' : [
+            'drivers/infiniband/hw/hfi1',
+            'drivers/infiniband/sw/rdmavt',
+            'include/uapi/rdma/hfi/'
+            ],
+        'mana_ib' : [
+            'drivers/infiniband/hw/mana',
+            'include/uapi/rdma/mana-abi.h'
+        ],
+        'qedr' : [
+            'drivers/infiniband/hw/qedr',
+            'include/uapi/rdma/qedr-abi.h'
+            'drivers/net/ethernet/qlogic/qed/'
+        ],
+        'vmw_pvrdma' : [
+            'drivers/infiniband/hw/vmw_pvrdma',
+            'include/uapi/rdma/vmw_pvrdma-abi.h'
+        ],
+        'i40e' : [
+            'drivers/net/ethernet/intel/i40e/',
+        ],
+        'octeon_ep' : [
+                'drivers/net/ethernet/marvell/octeon_ep',
+                'drivers/net/ethernet/marvell/octeon_ep_vf',
         ],
 }
 
@@ -106,7 +144,7 @@ class git_change_log(object):
         self.parser.add_argument('-l', '--old_kernel_path', help='Path to old kernel tree', required=True)
         self.parser.add_argument('-p', '--upstream_kernel_path', help='Path to upsream kernel tree', required=True)
         self.parser.add_argument('--dirs', help='list of directorys to search for changes', nargs='+',
-                                 choices=['core', 'drivers', 'ulps', 'vmxnet3'], default=[ 'core', 'drivers', 'ulps'])
+                                 choices=SEARCH_PATHS.keys(), default=[ 'core', 'drivers', 'ulps'])
         self.parser.add_argument('--debug', help="enable debug prints", action="store_true")
         self.parser.add_argument('--fixes', help="enable find fixes commit only", action="store_true", default=False)
 

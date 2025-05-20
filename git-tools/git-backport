@@ -43,6 +43,7 @@ class git_backport(object):
 
     def parse_args(self, args):
         self.Parser.add_argument('-j', '--jira', help='Jira issue')
+        self.Parser.add_argument('-c', '--cve', help='CVE number')
         self.Parser.add_argument('-d', '--dir', help='Directory to store the diff files', default='/tmp')
         self.Parser.add_argument('-f', '--file', help='File that include the change log', required=True)
         self.Parser.add_argument('-u', '--upstream_dir', help='Path to upstream kernel tree', required=True)
@@ -94,7 +95,9 @@ class git_backport(object):
         diff_file = open(self.dir + os.sep + diff_name + '.diff', 'w+')
         out = "From: %s\n\nSubject: %s\n\n" % (self.User, commit.summary)
         if self.jira:
-            out += "JIRA: https://issues.redhat.com/browse/%s\n\n" % self.jira
+            out += "JIRA: https://issues.redhat.com/browse/RHEL-%s\n\n" % self.jira
+        if self.cve:
+            out += "CVE: %s\n\n" % self.cve
         out += "%s\n" % self.UpstreamRepo.git.show(commit.hexsha, "--full-index")
         diff_file.write(out)
         diff_file.close()
