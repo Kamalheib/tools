@@ -69,6 +69,9 @@ SEARCH_PATHS = {
             'drivers/infiniband/hw/efa/',
             'include/uapi/rdma/efa-abi.h',
             ],
+        'ena': [
+            'drivers/net/ethernet/amazon/ena/'
+        ],
         'bnxt_re': [
             'drivers/infiniband/hw/bnxt_re/',
             'include/uapi/rdma/bnxt_re-abi.h',
