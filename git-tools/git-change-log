@@ -34,81 +34,79 @@ except ImportError:
     sys.exit(1)
 
 SEARCH_PATHS = {
-        'core': [
-            'include/uapi/linux/if_infiniband.h',
-            'Documentation/infiniband',
-            'drivers/infiniband/Makefile',
-            'drivers/infiniband/Kconfig',
-            'drivers/infiniband/core/',
-            'include/rdma/',
-            'include/uapi/rdma/',
-            ],
-        'drivers': [
-            'drivers/infiniband/sw/rxe',
-            'drivers/infiniband/sw/siw',
-            'drivers/infiniband/sw/rdmavt',
-            'drivers/infiniband/hw/vmw_pvrdma',
-            'drivers/infiniband/hw/efa',
-            'drivers/infiniband/hw/hfi1',
-            'drivers/infiniband/hw/irdma',
-            'drivers/infiniband/hw/usnic',
-            ],
-        'ulps': [
-            'drivers/infiniband/ulp/ipoib/',
-            'drivers/infiniband/ulp/opa_vnic',
-            'drivers/infiniband/ulp/iser/',
-            'drivers/infiniband/ulp/isert/',
-            'drivers/infiniband/ulp/srp/',
-            'drivers/scsi/scsi_transport_srp.c',
-            'include/scsi/scsi_transport_srp.h',
-            'drivers/infiniband/ulp/srpt/',
-            'drivers/scsi/scsi_transport_srp.c',
-            'include/scsi/scsi_transport_srp.h',
-            ],
-        'efa': [
-            'drivers/infiniband/hw/efa/',
-            'include/uapi/rdma/efa-abi.h',
-            ],
-        'ena': [
-            'drivers/net/ethernet/amazon/ena/'
-        ],
-        'bnxt_re': [
-            'drivers/infiniband/hw/bnxt_re/',
-            'include/uapi/rdma/bnxt_re-abi.h',
-            ],
-        'irdma': [
-            'drivers/infiniband/hw/irdma/',
-            'include/uapi/rdma/irdma-abi.h',
-            ],
-        'cxgb4': [
-            'drivers/infiniband/hw/cxgb4/',
-            'include/uapi/rdma/cxgb4-abi.h',
-            ],
-        'hfi1' : [
-            'drivers/infiniband/hw/hfi1',
-            'drivers/infiniband/sw/rdmavt',
-            'include/uapi/rdma/hfi/'
-            ],
-        'mana_ib' : [
-            'drivers/infiniband/hw/mana',
-            'include/uapi/rdma/mana-abi.h'
-        ],
-        'qedr' : [
-            'drivers/infiniband/hw/qedr',
-            'include/uapi/rdma/qedr-abi.h'
-            'drivers/net/ethernet/qlogic/qed/'
-        ],
-        'vmw_pvrdma' : [
-            'drivers/infiniband/hw/vmw_pvrdma',
-            'include/uapi/rdma/vmw_pvrdma-abi.h'
-        ],
-        'i40e' : [
-            'drivers/net/ethernet/intel/i40e/',
-        ],
-        'octeon_ep' : [
-                'drivers/net/ethernet/marvell/octeon_ep',
-                'drivers/net/ethernet/marvell/octeon_ep_vf',
-        ],
+    "core": [
+        "include/uapi/linux/if_infiniband.h",
+        "Documentation/infiniband",
+        "drivers/infiniband/Makefile",
+        "drivers/infiniband/Kconfig",
+        "drivers/infiniband/core/",
+        "include/rdma/",
+        "include/uapi/rdma/",
+    ],
+    "drivers": [
+        "drivers/infiniband/sw/rxe",
+        "drivers/infiniband/sw/siw",
+        "drivers/infiniband/sw/rdmavt",
+        "drivers/infiniband/hw/vmw_pvrdma",
+        "drivers/infiniband/hw/efa",
+        "drivers/infiniband/hw/hfi1",
+        "drivers/infiniband/hw/irdma",
+        "drivers/infiniband/hw/usnic",
+    ],
+    "ulps": [
+        "drivers/infiniband/ulp/ipoib/",
+        "drivers/infiniband/ulp/opa_vnic",
+        "drivers/infiniband/ulp/iser/",
+        "drivers/infiniband/ulp/isert/",
+        "drivers/infiniband/ulp/srp/",
+        "drivers/scsi/scsi_transport_srp.c",
+        "include/scsi/scsi_transport_srp.h",
+        "drivers/infiniband/ulp/srpt/",
+        "drivers/scsi/scsi_transport_srp.c",
+        "include/scsi/scsi_transport_srp.h",
+    ],
+    "efa": [
+        "drivers/infiniband/hw/efa/",
+        "include/uapi/rdma/efa-abi.h",
+    ],
+    "ena": ["drivers/net/ethernet/amazon/ena/"],
+    "bnxt_re": [
+        "drivers/infiniband/hw/bnxt_re/",
+        "include/uapi/rdma/bnxt_re-abi.h",
+    ],
+    "irdma": [
+        "drivers/infiniband/hw/irdma/",
+        "include/uapi/rdma/irdma-abi.h",
+    ],
+    "cxgb4": [
+        "drivers/infiniband/hw/cxgb4/",
+        "include/uapi/rdma/cxgb4-abi.h",
+    ],
+    "hfi1": [
+        "drivers/infiniband/hw/hfi1",
+        "drivers/infiniband/sw/rdmavt",
+        "include/uapi/rdma/hfi/",
+    ],
+    "mana_ib": ["drivers/infiniband/hw/mana", "include/uapi/rdma/mana-abi.h"],
+    "qedr": [
+        "drivers/infiniband/hw/qedr",
+        "include/uapi/rdma/qedr-abi.h" "drivers/net/ethernet/qlogic/qed/",
+    ],
+    "vmw_pvrdma": [
+        "drivers/infiniband/hw/vmw_pvrdma",
+        "include/uapi/rdma/vmw_pvrdma-abi.h",
+    ],
+    "i40e": [
+        "drivers/net/ethernet/intel/i40e/",
+    ],
+    "octeon_ep": [
+        "drivers/net/ethernet/marvell/octeon_ep",
+        "drivers/net/ethernet/marvell/octeon_ep_vf",
+    ],
+    "benet": [
+        "drivers/net/ethernet/emulex/benet",
+    ],
+    "sfc": ["drivers/net/ethernet/sfc"],
 }
 
 PICK_RGEX_LIST = [
@@ -122,15 +120,13 @@ PICK_RGEX_LIST = [
     "Upstream commit ([0-9a-f]+)",
     "upstream: ([0-9a-f]+)",
     "Upstream: ([0-9a-f]+)",
-    r"commit ([0-9a-fA-F]{10,})\s*\r?\n\s*Author:", # Make sure next line is 'Author:'
-    "Commit ([0-9a-f]+)"
+    r"commit ([0-9a-fA-F]{10,})\s*\r?\n\s*Author:",  # Make sure next line is 'Author:'
+    "Commit ([0-9a-f]+)",
 ]
 
-IGNORE_COMMITS = [
-]
+IGNORE_COMMITS = []
 
-IGNORE_UPSTREAM_COMMITS = [
-]
+IGNORE_UPSTREAM_COMMITS = []
 
 
 class git_change_log(object):
@@ -262,9 +258,11 @@ class git_change_log(object):
 
 def is_upstream_commit(commit):
     for line in commit.message.splitlines():
-        if (re.search("Upstream status:", line, re.IGNORECASE) and
-            (re.search("RHEL", line, re.IGNORECASE) or re.search("N/A", line, re.IGNORECASE))):
-                return False
+        if re.search("Upstream status:", line, re.IGNORECASE) and (
+            re.search("RHEL", line, re.IGNORECASE)
+            or re.search("N/A", line, re.IGNORECASE)
+        ):
+            return False
     return True
 
 
