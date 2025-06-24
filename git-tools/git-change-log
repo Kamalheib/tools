@@ -122,7 +122,7 @@ PICK_RGEX_LIST = [
     "Upstream commit ([0-9a-f]+)",
     "upstream: ([0-9a-f]+)",
     "Upstream: ([0-9a-f]+)",
-    "commit (([0-9a-f]+){10})",
+    r"commit ([0-9a-fA-F]{10,})\s*\r?\n\s*Author:", # Make sure next line is 'Author:'
     "Commit ([0-9a-f]+)"
 ]
 
@@ -194,7 +194,17 @@ class git_change_log(object):
                         print("Ignore:", commit)
                         continue
 
-                    upstream_commit = self.UpstreamRepo.commit(match.group(1))
+                    # Ignore refs to commits not from upstream
+                    if not is_upstream_commit(commit):
+                        print("Skipped (references non-upstream commit):", commit)
+                        continue
+                    
+                    try:
+                        upstream_commit = self.UpstreamRepo.commit(match.group(1))
+                    except Exception as e:
+                        print("Ignored (referenced commit not found in upstream):", commit)
+                        continue
+
                     self.included_commits_set.add(upstream_commit.hexsha)
                 else:
                     if self.debug:
@@ -249,6 +259,14 @@ class git_change_log(object):
     UpstreamRepo = property(get_upstream_repo)
     IncludedCommits = property(get_included_commits)
     UpstreamCommits = property(get_upstream_commits)
+
+def is_upstream_commit(commit):
+    for line in commit.message.splitlines():
+        if (re.search("Upstream status:", line, re.IGNORECASE) and
+            (re.search("RHEL", line, re.IGNORECASE) or re.search("N/A", line, re.IGNORECASE))):
+                return False
+    return True
+
 
 
 if __name__ == '__main__':
