@@ -178,8 +178,8 @@ class git_change_log(object):
 
                 if match:
                     if self.debug:
-                        print("Found:", commit)
-                        print(regex)
+                        print("Found:", commit, commit.summary)
+                        print("Regex:", regex)
                     ignore = False
                     for msg in IGNORE_COMMITS:
                         if msg in commit.message:
