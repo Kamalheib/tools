@@ -29,6 +29,7 @@ from argparse import ArgumentParser
 
 try:
     from git import Repo
+    from gitdb.exc import BadName
 except ImportError:
     print("Please Install GitPython Package (e.g. dnf install GitPython)")
     sys.exit(1)
@@ -203,6 +204,16 @@ class git_change_log(object):
                     # Ignore refs to commits not from upstream
                     if not git_change_log.is_upstream_commit(commit):
                         print("Skipped (references non-upstream commit):", commit)
+                        continue
+
+                    upstream_commit_hash = match.group(1)
+                    try:
+                        upstream_commit = self.UpstreamRepo.commit(upstream_commit_hash)
+                    except ValueError as e:
+                        print(f"Error: Commit hash {upstream_commit_hash}\n found with regex: {regex}\n referenced by commit {commit.hexsha} not found in upstream")
+                        continue
+                    except BadName as e:
+                        print(f"Error: Commit hash {upstream_commit_hash}\n found with regex: {regex}\n referenced by commit {commit.hexsha} is not a valid commit hash (maybe an issue with the regex?)")
                         continue
 
                     self.included_commits_set.add(upstream_commit.hexsha)
