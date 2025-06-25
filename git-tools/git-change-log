@@ -109,6 +109,12 @@ SEARCH_PATHS = {
                 'drivers/net/ethernet/marvell/octeon_ep',
                 'drivers/net/ethernet/marvell/octeon_ep_vf',
         ],
+        'benet': [
+            'drivers/net/ethernet/emulex/benet'   
+        ],
+        'sfc': [
+            'drivers/net/ethernet/sfc'
+        ]
 }
 
 PICK_RGEX_LIST = [
