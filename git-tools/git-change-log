@@ -174,8 +174,11 @@ class git_change_log(object):
 
             for commit in self.OldRepo.iter_commits(self.old_range, paths=self.DIRS_PATHS, no_merges=True):
                 match = None
+                # Strip conflicts section so the regex doesn't find irrelevant commit hashes
+                msg_no_conflict = strip_conflicts_section(commit.message)
+                conflict_match = re.search("Conflict", commit.message)
                 for regex in PICK_RGEX_LIST:
-                    match = re.search(regex, commit.message)
+                    match = re.search(regex, msg_no_conflict)
                     if match:
                         revert = "This reverts commit %s" % match.group(1)
                         if revert in commit.message:
@@ -271,6 +274,10 @@ class git_change_log(object):
     IncludedCommits = property(get_included_commits)
     UpstreamCommits = property(get_upstream_commits)
 
+def strip_conflicts_section(message):
+    pattern = r"^(Conflict|Conflicts):.*?\n\n"
+    filtered_message = re.sub(pattern, "", message, flags=re.DOTALL | re.MULTILINE)
+    return filtered_message
 
 
 if __name__ == '__main__':
