@@ -2,7 +2,7 @@
 
 """
 Tools Project
-Copyright(c) 2017 Tools
+Copyright(c) 2025 Tools
 
 This program is free software; you can redistribute it and/or modify it
 under the terms and conditions of the GNU General Public License,
@@ -42,16 +42,6 @@ SEARCH_PATHS = {
             'drivers/infiniband/core/',
             'include/rdma/',
             'include/uapi/rdma/',
-            ],
-        'drivers': [
-            'drivers/infiniband/sw/rxe',
-            'drivers/infiniband/sw/siw',
-            'drivers/infiniband/sw/rdmavt',
-            'drivers/infiniband/hw/vmw_pvrdma',
-            'drivers/infiniband/hw/efa',
-            'drivers/infiniband/hw/hfi1',
-            'drivers/infiniband/hw/irdma',
-            'drivers/infiniband/hw/usnic',
             ],
         'ulps': [
             'drivers/infiniband/ulp/ipoib/',
