@@ -173,7 +173,7 @@ class git_change_log(object):
         if not hasattr(self, 'included_commits_set'):
             self.included_commits_set = set()
 
-            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.RDMA_PATHS, no_merges=True):
+            for commit in self.OldRepo.iter_commits(self.old_range, paths=self.DIRS_PATHS, no_merges=True):
                 match = None
                 for regex in PICK_RGEX_LIST:
                     match = re.search(regex, commit.message)
@@ -213,7 +213,7 @@ class git_change_log(object):
         if not hasattr(self, 'upstream_commits_set'):
             self.upstream_commits_set = set()
 
-            for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.RDMA_PATHS, no_merges=True):
+            for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.DIRS_PATHS, no_merges=True):
                 ignore = False
                 for ignore_commit in IGNORE_UPSTREAM_COMMITS:
                     if ignore_commit in commit.summary:
@@ -232,16 +232,16 @@ class git_change_log(object):
 
         not_inclueded_commits = self.UpstreamCommits - self.IncludedCommits
 
-        for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.RDMA_PATHS, no_merges=True,
+        for commit in self.UpstreamRepo.iter_commits(self.upstream_range, paths=self.DIRS_PATHS, no_merges=True,
                                                      reverse=True):
             if commit.hexsha in not_inclueded_commits:
                 msg = "%s # %s" % (commit, commit.summary)
                 print(msg)
 
     def build_paths(self):
-        self.RDMA_PATHS = []
+        self.DIRS_PATHS = []
         for directory in self.dirs:
-            self.RDMA_PATHS += SEARCH_PATHS[directory]
+            self.DIRS_PATHS += SEARCH_PATHS[directory]
 
     def execute(self, args):
         self.parse_args(args)
