@@ -100,12 +100,24 @@ SEARCH_PATHS = {
                 'drivers/net/ethernet/marvell/octeon_ep',
                 'drivers/net/ethernet/marvell/octeon_ep_vf',
         ],
+        'octeontx2' : [
+                'drivers/net/ethernet/marvell/octeontx2/af/',
+                'drivers/net/ethernet/marvell/octeontx2/nic/',
+        ],
         'benet': [
             'drivers/net/ethernet/emulex/benet'   
         ],
         'sfc': [
             'drivers/net/ethernet/sfc'
-        ]
+        ],
+        'mlx5_core' : [
+            'drivers/net/ethernet/mellanox/mlx5/',
+            'include/linux/mlx5/'
+        ],
+        'mlx5_ib' : [
+            'drivers/infiniband/hw/mlx5',
+            'include/uapi/rdma/mlx5-abi.h'
+        ],
 }
 
 PICK_RGEX_LIST = [
@@ -124,6 +136,11 @@ PICK_RGEX_LIST = [
 ]
 
 IGNORE_COMMITS = [
+        'dd34905c1560973d976a3554b230a4291e8ac367',
+        'aed71f296637',
+        '9538f384b535',
+        '1d2e32275de7',
+        '607c2c01d8e04d519c734a1c4f58a8ac1055804b'
 ]
 
 IGNORE_UPSTREAM_COMMITS = [
