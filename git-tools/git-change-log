@@ -31,7 +31,7 @@ try:
     from git import Repo
     from gitdb.exc import BadName
 except ImportError:
-    print("Please Install GitPython Package (e.g. dnf install GitPython)")
+    print("Please Install GitPython Package (e.g. pip install GitPython)")
     sys.exit(1)
 
 SEARCH_PATHS = {
